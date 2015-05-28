@@ -1,0 +1,42 @@
+CPP = g++
+INC = -I../cryphutil -I../fontutil -I../glslutil -I../mvcutil
+C_FLAGS = -fPIC -g -c -DGL_GLEXT_PROTOTYPES $(INC)
+
+LINK = g++ -fPIC -g
+LOCAL_UTIL_LIBRARIES = -L../lib -lcryph -lfont -lglsl -lmvc
+OGL_LIBRARIES = -lglfw -lGLU -lGL
+
+OBJS = project4.o ModelViewWithLighting.o TEMPLATE_Subclass.o getMatrices.o Block.o Controller_Subclass.o Texture_Block.o
+
+project4: $(OBJS) ../lib/libcryph.so ../lib/libfont.so ../lib/libglsl.so ../lib/libmvc.so ../lib/libimage.so
+	$(LINK) -o project4 $(OBJS) $(LOCAL_UTIL_LIBRARIES) $(OGL_LIBRARIES)
+
+../lib/libcryph.so: ../cryphutil/AffVector.h ../cryphutil/AffVector.c++ ../cryphutil/AffPoint.h ../cryphutil/AffPoint.c++
+	(cd ../cryphutil; make)
+
+../lib/libfont.so: ../fontutil/CFont.h ../fontutil/CFont.c++ ../fontutil/CGLString.h ../fontutil/CGLString.c++
+	(cd ../fontutil; make)
+
+../lib/libglsl.so: ../glslutil/ShaderIF.h ../glslutil/ShaderIF.c++
+	(cd ../glslutil; make)
+
+../lib/libmvc.so: ../mvcutil/Controller.h ../mvcutil/Controller.c++ ../mvcutil/ModelView.h ../mvcutil/ModelView.c++
+	(cd ../mvcutil; make)
+
+../lib/libimage.so: ../imageutil/ImageReader.h ../imageutil/ImageReader.c++
+	(cd ../imageutil; make)
+
+project4.o: project4.c++
+	$(CPP) $(C_FLAGS) project4.c++
+getMatrices.o: getMatrices.c++
+	$(CPP) $(C_FLAGS) getMatrices.c++
+ModelViewWithLighting.o: ModelViewWithLighting.h ModelViewWithLighting.c++
+	$(CPP) $(C_FLAGS) ModelViewWithLighting.c++
+TEMPLATE_Subclass.o: TEMPLATE_Subclass.h TEMPLATE_Subclass.c++
+	$(CPP) $(C_FLAGS) TEMPLATE_Subclass.c++
+Controller_Subclass.o: Controller_Subclass.h Controller_Subclass.c++
+	$(CPP) $(C_FLAGS) Controller_Subclass.c++
+Block.o: Block.h Block.c++
+	$(CPP) $(C_FLAGS) Block.c++
+Texture_Block.o: Texture_Block.h Texture_Block.c++
+	$(CPP) $(C_FLAGS) Texture_Block.c++

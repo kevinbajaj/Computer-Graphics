@@ -1,0 +1,17 @@
+#version 410 core
+
+in vec3 colorToFS;
+in vec2 texCoordsToFS;
+
+uniform sampler2D textureMap;
+
+out vec4 fragmentColor;
+
+void main()
+{
+	//vec4 tColor = texture(textureMap, texCoordsToFS);
+	if(texCoordsToFS.x > 0.0)
+		fragmentColor = vec4(1.0, 1.0, 1.0, 1.0);
+		
+	fragmentColor = vec4(colorToFS, 1.0);
+}
